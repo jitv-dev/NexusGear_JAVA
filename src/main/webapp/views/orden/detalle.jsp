@@ -51,12 +51,12 @@
           <div class="carrito-item-info">
             <div class="carrito-item-name"><c:out value="${item.productoNombre}"/></div>
             <div class="carrito-item-price">
-              $<fmt:formatNumber value="${item.precioUnit}" pattern="#,###" groupingSeparator="."/>
+                ${item.precioUnit} × <c:out value="${item.cantidad}"/>
               × <c:out value="${item.cantidad}"/>
             </div>
           </div>
           <div style="color:var(--accent);font-weight:800">
-            $<fmt:formatNumber value="${item.subtotal}" pattern="#,###" groupingSeparator="."/>
+              ${item.subtotalFormateado}
           </div>
         </div>
       </c:forEach>

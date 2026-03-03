@@ -32,14 +32,14 @@
       <div style="display:flex;justify-content:space-between;
                   padding:0.4rem 0;font-size:0.85rem;border-bottom:1px solid rgba(255,255,255,0.04)">
         <span><c:out value="${item.productoImagen}"/> <c:out value="${item.productoNombre}"/> ×<c:out value="${item.cantidad}"/></span>
-        <span style="color:var(--accent)">$<fmt:formatNumber value="${item.subtotal}" pattern="#,###" groupingSeparator="."/></span>
+        <span style="color:var(--accent)"><span style="color:var(--accent)">${item.subtotalFormateado}</span></span>
       </div>
       <c:set var="total" value="${total + item.subtotal}"/>
     </c:forEach>
     <div style="display:flex;justify-content:space-between;padding-top:0.8rem;
                 font-size:1.1rem;font-weight:800">
       <span>Total</span>
-      <span style="color:var(--accent)">$<fmt:formatNumber value="${total}" pattern="#,###" groupingSeparator="."/></span>
+      <span style="color:var(--accent)"><span style="color:var(--accent)">$<fmt:formatNumber value="${total}" pattern="#,###"/></span></span>
     </div>
   </div>
 
