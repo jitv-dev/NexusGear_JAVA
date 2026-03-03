@@ -14,9 +14,10 @@ import java.util.List;
 /**
  * CONTROLLER — Servlet para gestionar el catálogo de productos.
  *
- * Lección 3 + 5: Servlets como controladores en el patrón MVC.
- * - GET: listar, buscar, ver detalle, formulario de alta/edición
- * - POST: crear, actualizar, eliminar productos (solo ADMIN)
+ * ✅ CORRECCIÓN: las rutas del RequestDispatcher apuntaban a
+ *    /views/producto/  (singular — no existe)
+ *    y deben apuntar a
+ *    /views/productos/ (plural — carpeta real creada por IntelliJ)
  *
  * URL mapeada: /productos
  */
@@ -32,13 +33,12 @@ public class ProductoServlet extends HttpServlet {
     }
 
     // ================================================================
-    // GET — Muestra vistas de productos
+    // GET
     // ================================================================
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
 
-        // Verificar sesión activa
         if (!haySession(req)) {
             res.sendRedirect(req.getContextPath() + "/login");
             return;
@@ -62,15 +62,23 @@ public class ProductoServlet extends HttpServlet {
                 break;
 
             case "nuevo":
-                verificarAdmin(req, res);
+                if (!esAdmin(req)) {
+                    res.sendRedirect(req.getContextPath() + "/productos");
+                    return;
+                }
+                // ✅ /views/productos/ (plural)
                 req.getRequestDispatcher("/views/productos/form.jsp").forward(req, res);
                 break;
 
             case "editar":
-                verificarAdmin(req, res);
+                if (!esAdmin(req)) {
+                    res.sendRedirect(req.getContextPath() + "/productos");
+                    return;
+                }
                 int idEditar = Integer.parseInt(req.getParameter("id"));
                 Producto p = productoDAO.buscarPorId(idEditar);
-                req.setAttribute("productos", p);
+                req.setAttribute("producto", p);
+                // ✅ /views/productos/ (plural)
                 req.getRequestDispatcher("/views/productos/form.jsp").forward(req, res);
                 break;
 
@@ -80,7 +88,7 @@ public class ProductoServlet extends HttpServlet {
     }
 
     // ================================================================
-    // POST — Procesa formularios (ADMIN)
+    // POST
     // ================================================================
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
@@ -108,7 +116,7 @@ public class ProductoServlet extends HttpServlet {
             case "eliminar":
                 int idElim = Integer.parseInt(req.getParameter("id"));
                 productoDAO.eliminar(idElim);
-                req.getSession().setAttribute("mensaje", "Producto eliminado correctamente.");
+                req.getSession().setAttribute("mensaje", "✅ Producto eliminado correctamente.");
                 res.sendRedirect(req.getContextPath() + "/productos");
                 break;
 
@@ -118,14 +126,15 @@ public class ProductoServlet extends HttpServlet {
     }
 
     // ================================================================
-    // Métodos privados de lógica
+    // Métodos privados
     // ================================================================
 
     private void listar(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
         List<Producto> productos = productoDAO.listarTodos();
-        req.setAttribute("productos",  productos);
+        req.setAttribute("productos", productos);
         req.setAttribute("totalProductos", productos.size());
+        // ✅ /views/productos/ (plural)
         req.getRequestDispatcher("/views/productos/lista.jsp").forward(req, res);
     }
 
@@ -135,9 +144,10 @@ public class ProductoServlet extends HttpServlet {
         List<Producto> productos = (query != null && !query.isBlank())
                 ? productoDAO.buscar(query)
                 : productoDAO.listarTodos();
-        req.setAttribute("productos",  productos);
-        req.setAttribute("busqueda",   query);
+        req.setAttribute("productos", productos);
+        req.setAttribute("busqueda", query);
         req.setAttribute("totalProductos", productos.size());
+        // ✅ /views/productos/ (plural)
         req.getRequestDispatcher("/views/productos/lista.jsp").forward(req, res);
     }
 
@@ -149,7 +159,8 @@ public class ProductoServlet extends HttpServlet {
             res.sendRedirect(req.getContextPath() + "/productos");
             return;
         }
-        req.setAttribute("productos", p);
+        req.setAttribute("producto", p);
+        // ✅ /views/productos/ (plural)
         req.getRequestDispatcher("/views/productos/detalle.jsp").forward(req, res);
     }
 
@@ -172,7 +183,6 @@ public class ProductoServlet extends HttpServlet {
         res.sendRedirect(req.getContextPath() + "/productos");
     }
 
-    /** Construye un objeto Producto desde los parámetros del formulario */
     private Producto buildProducto(HttpServletRequest req) {
         Producto p = new Producto();
         p.setNombre(req.getParameter("nombre"));
@@ -203,10 +213,5 @@ public class ProductoServlet extends HttpServlet {
         if (s == null) return false;
         Usuario u = (Usuario) s.getAttribute("usuarioLogueado");
         return u != null && u.isAdmin();
-    }
-
-    private void verificarAdmin(HttpServletRequest req, HttpServletResponse res)
-            throws IOException {
-        if (!esAdmin(req)) res.sendRedirect(req.getContextPath() + "/productos");
     }
 }

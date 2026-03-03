@@ -19,6 +19,7 @@ public class DBConexion {
             "&characterEncoding=UTF-8&allowPublicKeyRetrieval=true";
     private static final String USUARIO  = "root";
     private static final String PASSWORD = "1313";
+
     /** Instancia única del Singleton */
     private static DBConexion instancia;
     private Connection conexion;

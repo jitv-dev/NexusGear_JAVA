@@ -22,11 +22,8 @@
   <dependencies>
 
     <!-- ============================================================
-         OPCIÓN A — Tomcat 10.x / Jakarta EE (recomendado)
-         Si usas Tomcat 10, deja estas dependencias como están.
+         OPCIÓN A — Tomcat 10.x / Jakarta EE
          ============================================================ -->
-
-    <!-- Jakarta Servlet 6.0 (Tomcat 10.1.x) -->
     <dependency>
       <groupId>jakarta.servlet</groupId>
       <artifactId>jakarta.servlet-api</artifactId>
@@ -34,7 +31,6 @@
       <scope>provided</scope>
     </dependency>
 
-    <!-- Jakarta JSP 3.1 (Tomcat 10.1.x) -->
     <dependency>
       <groupId>jakarta.servlet.jsp</groupId>
       <artifactId>jakarta.servlet.jsp-api</artifactId>
@@ -42,7 +38,6 @@
       <scope>provided</scope>
     </dependency>
 
-    <!-- JSTL 2.0 para Jakarta -->
     <dependency>
       <groupId>jakarta.servlet.jsp.jstl</groupId>
       <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
@@ -56,7 +51,7 @@
 
     <!-- ============================================================
          OPCIÓN B — Tomcat 9.x / javax (Java EE clásico)
-         Si usas Tomcat 9, comenta la opción A y descomenta esta sección:
+         Si usas Tomcat 9, comenta la Opción A y descomenta esto:
 
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -90,7 +85,6 @@
     <finalName>NexusGearApp</finalName>
     <plugins>
 
-      <!-- Compilador Java 17 -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -102,7 +96,6 @@
         </configuration>
       </plugin>
 
-      <!-- Generador de WAR para despliegue en Tomcat -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
