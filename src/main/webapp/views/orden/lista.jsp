@@ -72,10 +72,10 @@
                             style="width: auto; display: inline; padding: 0.3rem 0.5rem"
                             onchange="this.form.submit()">
                       <option value="PENDIENTE"  <c:if test="${o.estado eq 'PENDIENTE'}"> selected > PENDIENTE</c:if></option>
-                      <option value="PAGADO"     <c:if test="${o.estado eq 'PAGADO'"> selected > PAGADO</c:if></option>
-                      <option value="ENVIADO"    <c:if test="${o.estado eq 'ENVIADO'"> selected > ENVIADO</c:if></option>
-                      <option value="ENTREGADO"  <c:if test="${o.estado eq 'ENTREGADO'"> selected > ENTREGADO</c:if></option>
-                      <option value="CANCELADO"  <c:if test="${o.estado eq 'CANCELADO'"> selected > CANCELADO</c:if></option>
+                      <option value="PAGADO"     <c:if test="${o.estado eq 'PAGADO'}"> selected > PAGADO</c:if></option>
+                      <option value="ENVIADO"    <c:if test="${o.estado eq 'ENVIADO'}"> selected > ENVIADO</c:if></option>
+                      <option value="ENTREGADO"  <c:if test="${o.estado eq 'ENTREGADO'}"> selected > ENTREGADO</c:if></option>
+                      <option value="CANCELADO"  <c:if test="${o.estado eq 'CANCELADO'}"> selected > CANCELADO</c:if></option>
                     </select>
                   </form>
                 </c:if>
