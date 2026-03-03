@@ -66,14 +66,16 @@
                   <form method="POST" action="<c:url value='/ordenes'/>" style="display:inline">
                     <input type="hidden" name="accion" value="cambiarEstado">
                     <input type="hidden" name="id" value="${o.id}">
-                    <select name="estado" class="form-control btn-sm"
-                            style="width:auto;display:inline;padding:0.3rem 0.5rem"
+
+                    <select name="estado"
+                            class="form-control btn-sm"
+                            style="width: auto; display: inline; padding: 0.3rem 0.5rem"
                             onchange="this.form.submit()">
-                      <c:forEach var="est" items="${['PENDIENTE','PAGADO','ENVIADO','ENTREGADO','CANCELADO']}">
-                        <option value="${est}" <c:if test="${o.estado eq est}">selected</c:if>>
-                          <c:out value="${est}"/>
-                        </option>
-                      </c:forEach>
+                      <option value="PENDIENTE"  <c:if test="${o.estado eq 'PENDIENTE'}"> selected > PENDIENTE</c:if></option>
+                      <option value="PAGADO"     <c:if test="${o.estado eq 'PAGADO'"> selected > PAGADO</c:if></option>
+                      <option value="ENVIADO"    <c:if test="${o.estado eq 'ENVIADO'"> selected > ENVIADO</c:if></option>
+                      <option value="ENTREGADO"  <c:if test="${o.estado eq 'ENTREGADO'"> selected > ENTREGADO</c:if></option>
+                      <option value="CANCELADO"  <c:if test="${o.estado eq 'CANCELADO'"> selected > CANCELADO</c:if></option>
                     </select>
                   </form>
                 </c:if>
