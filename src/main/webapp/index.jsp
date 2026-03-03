@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="<c:url value='/css/style.css'/>">
 </head>
 <body>
-
+<%@ include file="/views/navbar.jsp"%>
 <div class="login-page">
     <div class="login-box">
 
