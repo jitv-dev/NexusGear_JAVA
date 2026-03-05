@@ -32,7 +32,7 @@
         </c:if>
 
         <!-- Formulario de Login -->
-        <form method="POST" action="<c:url value='/login'/>">
+        <form method="POST" action="<c:url value='/login'/>" autocomplete="off">
 
             <div class="form-group">
                 <label class="form-label" for="email">Email</label>
