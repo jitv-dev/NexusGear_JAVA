@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -26,20 +25,34 @@
   <div class="card" style="margin-bottom:1rem">
     <h3 style="font-size:0.85rem;letter-spacing:1px;text-transform:uppercase;
                color:var(--muted);margin-bottom:1rem">Resumen del pedido</h3>
-    <c:set var="total" value="0"/>
+
+    <c:set var="totalGeneral" value="0"/>
     <c:forEach var="entry" items="${sessionScope.carrito}">
       <c:set var="item" value="${entry.value}"/>
+
+
       <div style="display:flex;justify-content:space-between;
                   padding:0.4rem 0;font-size:0.85rem;border-bottom:1px solid rgba(255,255,255,0.04)">
-        <span><c:out value="${item.productoImagen}"/> <c:out value="${item.productoNombre}"/> ×<c:out value="${item.cantidad}"/></span>
-        <span style="color:var(--accent)"><span style="color:var(--accent)">${item.subtotalFormateado}</span></span>
+        <span>
+          <c:out value="${item.productoImagen}"/>
+          <c:out value="${item.productoNombre}"/>
+          ×<c:out value="${item.cantidad}"/>
+        </span>
+        <span style="color:var(--accent)">
+          <c:out value="${item.subtotalFormateado}"/>
+        </span>
       </div>
-      <c:set var="total" value="${total + item.subtotal}"/>
+
+      <c:set var="totalGeneral" value="${totalGeneral + item.subtotal}"/>
     </c:forEach>
+
+
     <div style="display:flex;justify-content:space-between;padding-top:0.8rem;
                 font-size:1.1rem;font-weight:800">
       <span>Total</span>
-      <span style="color:var(--accent)"><span style="color:var(--accent)">$<fmt:formatNumber value="${total}" pattern="#,###"/></span></span>
+      <span style="color:var(--accent)">
+        $<c:out value="${totalGeneral}"/>
+      </span>
     </div>
   </div>
 
@@ -60,6 +73,7 @@
           <input class="form-control" type="text" name="telefono" placeholder="+56 9 XXXX XXXX">
         </div>
       </div>
+
       <div class="form-group">
         <label class="form-label">Dirección de envío *</label>
         <input class="form-control" type="text" name="direccion" required

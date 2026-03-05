@@ -44,7 +44,7 @@
                     <div class="carrito-item-info">
                         <div class="carrito-item-name"><c:out value="${item.productoNombre}"/></div>
                         <div class="carrito-item-price">
-                            Precio unit: ${item.precioUnit}
+                            Precio unit: $<fmt:formatNumber value="${item.precioUnit}"/>
                         </div>
                         <div style="color:var(--muted);font-size:0.78rem">
                             Cantidad: <c:out value="${item.cantidad}"/>
@@ -53,7 +53,7 @@
 
                     <div style="text-align:right">
                         <div class="carrito-item-price" style="font-size:1rem">
-                                ${item.subtotalFormateado}
+                            $<fmt:formatNumber value="${item.subtotal}"/>
                         </div>
                         <a class="btn btn-danger btn-sm" style="margin-top:0.4rem"
                            href="<c:url value='/ordenes?accion=quitarCarrito&productoId=${item.productoId}'/>">
@@ -69,7 +69,9 @@
                 <%-- Total --%>
             <div class="carrito-total">
                 <span class="carrito-total-label">Total a pagar</span>
-                <span class="carrito-total-val">$<fmt:formatNumber value="${totalGeneral}" pattern="#,###"/></span>
+                <span class="carrito-total-val">
+          $<fmt:formatNumber value="${totalGeneral}"/>
+        </span>
             </div>
 
             <a class="btn btn-primary btn-full"

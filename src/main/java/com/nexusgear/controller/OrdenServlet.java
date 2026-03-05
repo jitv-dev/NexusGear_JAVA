@@ -140,23 +140,37 @@ public class OrdenServlet extends HttpServlet {
     @SuppressWarnings("unchecked")
     private void agregarAlCarrito(HttpServletRequest req, HttpServletResponse res)
             throws IOException {
-        int productoId = Integer.parseInt(req.getParameter("productoId"));
-        int cantidad   = Integer.parseInt(req.getParameter("cantidad") != null
-                         ? req.getParameter("cantidad") : "1");
+        int productoId;
+        try {
+            productoId = Integer.parseInt(req.getParameter("productoId"));
+        } catch (NumberFormatException e) {
+            System.err.println("[OrdenServlet.agregarAlCarrito] productoId inválido: "
+                    + req.getParameter("productoId"));
+            res.sendRedirect(req.getContextPath() + "/productos");
+            return;
+        }
+        int cantidad;
+        try {
+            String c = req.getParameter("cantidad");
+            cantidad = (c !=null && !c.isBlank()) ? Integer.parseInt(c) : 1;
+        } catch (NumberFormatException e) {
+            cantidad= 1;
+        }
 
         Producto p = productoDAO.buscarPorId(productoId);
-        if (p == null || !p.isDisponible()) {
+        if (p == null || !p.isDisponible()){
+            System.err.println("[OrderServlet.agregarAlCarrito] Producto no disponible id= " + productoId);
             res.sendRedirect(req.getContextPath() + "/productos");
             return;
         }
 
-        // El carrito se guarda en la sesión como Map<Integer, OrdenItem>
+        // el carrito se guarda en la sesion como MAP<Integer, OrdenItem>
         HttpSession session = req.getSession();
-        Map<Integer, OrdenItem> carrito =
+        Map<Integer, OrdenItem> carrito=
                 (Map<Integer, OrdenItem>) session.getAttribute("carrito");
-        if (carrito == null) carrito = new LinkedHashMap<>();
+        if(carrito == null) carrito = new LinkedHashMap<>();
 
-        if (carrito.containsKey(productoId)) {
+        if (carrito.containsKey(productoId)){
             carrito.get(productoId).setCantidad(
                     carrito.get(productoId).getCantidad() + cantidad);
         } else {
@@ -168,17 +182,24 @@ public class OrdenServlet extends HttpServlet {
             item.setPrecioUnit(p.getPrecio());
             carrito.put(productoId, item);
         }
-        session.setAttribute("carrito", carrito);
-        session.setAttribute("carritoCount", carrito.values().stream()
-                .mapToInt(OrdenItem::getCantidad).sum());
 
+        session.setAttribute("carrito", carrito);
+        session.setAttribute("carritoCount", carrito.values().stream().mapToInt(OrdenItem::getCantidad).sum());
+
+        System.out.println("[OrderServlet] Producto" + productoId + "agregado al carrito. Total items: " + session.getAttribute("carritoCount"));
         res.sendRedirect(req.getContextPath() + "/ordenes?accion=carrito");
     }
 
     @SuppressWarnings("unchecked")
     private void quitarDelCarrito(HttpServletRequest req, HttpServletResponse res)
             throws IOException {
-        int productoId = Integer.parseInt(req.getParameter("productoId"));
+        int productoId;
+        try {
+            productoId = Integer.parseInt(req.getParameter("productoId"));
+        } catch (NumberFormatException e) {
+            res.sendRedirect(req.getContextPath() + "/ordenes?accion=carrito");
+            return;
+        }
         HttpSession session = req.getSession(false);
         if (session != null) {
             Map<Integer, OrdenItem> carrito =
@@ -192,6 +213,7 @@ public class OrdenServlet extends HttpServlet {
         }
         res.sendRedirect(req.getContextPath() + "/ordenes?accion=carrito");
     }
+
 
     @SuppressWarnings("unchecked")
     private void confirmarOrden(HttpServletRequest req, HttpServletResponse res)
